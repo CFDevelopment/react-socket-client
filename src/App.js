@@ -3,6 +3,7 @@ import './App.css';
 import { connect, sendMsg } from "./api/index";
 import Header from './components/Header/Header';
 import Feed from './components/Feed/index';
+import FeedInput from './components/FeedInput/index'
 
 class App extends Component {
   constructor(props) {
@@ -23,9 +24,11 @@ class App extends Component {
     });
   }
 
-  send() {
-    console.log("[SEND]");
-    sendMsg("hello");
+  send(event) {
+    if(event.keyCode === 13) {
+      sendMsg(event.target.value);
+      event.target.value = "";
+    }
   }
 
   render() {
@@ -33,7 +36,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <Feed feed={this.state.feed} />
-        <button onClick={this.send}>Hit</button>
+        <FeedInput send={this.send} />
       </div>
     );
   }
