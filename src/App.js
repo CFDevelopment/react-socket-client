@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect, sendMsg } from "./api/index";
 import Header from './components/Header/Header';
+import Feed from './components/Feed/index';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    connect();
+  }
+
+  state = {
+    feed: []
+  }
+
+  componentDidMount() {
+    connect((msg) => {
+      console.log("New Message")
+      this.setState(prevState => ({
+        feed: [...this.state.feed, msg]
+      }))
+      console.log(this.state);
+    });
   }
 
   send() {
@@ -18,9 +32,8 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <header className="App-header">
-          <button onClick={this.send}>Hit</button>
-        </header>
+        <Feed feed={this.state.feed} />
+        <button onClick={this.send}>Hit</button>
       </div>
     );
   }
